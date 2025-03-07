@@ -1,13 +1,12 @@
 import React from 'react'
 import Category from '../components/Category'
-import { CalendarDays, MessageSquare } from 'lucide-react';
 import PostCard from '../components/PostCard';
 import ProfilePostCard from '../components/ProfilePostCard';
 import InformationBlogCard from '../components/InformationBlogCard';
 
 const Home:React.FC = () => {
   return (
-    <section className='flex flex-col w-full py-10 px-5'>
+    <section className='flex flex-col w-full py-10 px-5 border-b border-b-slate-200'>
       <div className='flex flex-col items-center justify-center gap-5'>
         <h1 className='text-6xl font-bold'>Welcome to BlogSpace</h1>
         <span className='text-xl text-slate-500'>A place to share your thoughts, ideas, and stories with the world.</span>
