@@ -1,6 +1,9 @@
 import React from 'react'
 import Category from '../components/Category'
 import { CalendarDays, MessageSquare } from 'lucide-react';
+import PostCard from '../components/PostCard';
+import ProfilePostCard from '../components/ProfilePostCard';
+import InformationBlogCard from '../components/InformationBlogCard';
 
 const Home:React.FC = () => {
   return (
@@ -38,25 +41,11 @@ const Home:React.FC = () => {
             </div>
 
             <div className='flex items-center justify-between pt-5'>
-              <div className='flex gap-3 items-center'>
-                {/* IMAGE PROFILE */}
-                <div className='min-w-7 min-h-7 bg-red-200 rounded-full'>
-
-                </div>
-
-                <span>Jane Doe</span>
-              </div>
+              <ProfilePostCard/>
 
               <div className='flex gap-5 items-center text-slate-500'>
-                <div className='flex gap-2 items-center'>
-                  <CalendarDays className='w-4 h-4'/>
-                  <span className='text-sm'>May 20, 2024</span>
-                </div>
-
-                <div className='flex gap-2 items-center'>
-                  <MessageSquare className='w-4 h-4'/>
-                  <span className='text-sm'>24 comments</span>
-                </div>
+                <InformationBlogCard name='date'/>
+                <InformationBlogCard name='comments'/>
               </div>
             </div>
 
@@ -67,6 +56,16 @@ const Home:React.FC = () => {
 
         </div>
 
+      </div>
+
+      <div className='flex flex-col pt-20 gap-6'>
+        <span className='text-3xl font-bold'>Recent Posts</span>
+
+        <div className='flex flex-wrap justify-between'>
+          <PostCard/>
+          <PostCard/>
+          <PostCard/>
+        </div>
       </div>
     </section>
   )
