@@ -3,7 +3,7 @@ import Nav from './Nav'
 
 const NavBar:React.FC = () => {
   return (
-    <div className='w-full h-16 flex justify-between items-center px-5 border-b border-b-slate-200 bg-white fixed z-99'>
+    <div className='w-full h-16 flex justify-between items-center px-10 border-b border-b-slate-200 bg-white fixed z-99'>
         <div className='flex gap-10 items-center'>
             <a href="/" className='font-semibold text-xl'>BlogSpace</a>
 
