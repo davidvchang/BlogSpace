@@ -7,7 +7,7 @@ const PostCard:React.FC = () => {
   return (
     <div className='flex flex-col w-[28rem] border border-slate-200 rounded-lg overflow-hidden'>
         {/* IMAGE */}
-        <div className='w-full min-h-52 bg-red-200'>
+        <div className='w-full min-h-48 bg-red-200'>
 
         </div>
 
