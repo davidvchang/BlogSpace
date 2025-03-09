@@ -5,6 +5,7 @@ import Home from "./pages/Home"
 import Blogs from "./pages/Blogs"
 import BlogView from "./pages/BlogView"
 import Login from "./pages/Login"
+import Register from "./pages/Register"
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
             <Route path="/blogs" element={<Blogs/>}/>
             <Route path="/blog" element={<BlogView/>}/>
             <Route path="/login" element={<Login/>}/>
+            <Route path="/register" element={<Register/>}/>
           </Routes>
         
         </BrowserRouter>
