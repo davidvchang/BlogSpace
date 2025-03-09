@@ -29,7 +29,7 @@ const Home:React.FC = () => {
 
           <div className='w-[50%] flex flex-col px-10 py-6 gap-3'>
             <div className='flex gap-3 items-center'>
-              <Category text='Featured'/>
+              <Category text='Featured' blue_color={true}/>
               <Category text='Technology'/>
             </div>
 
