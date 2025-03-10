@@ -13,7 +13,6 @@ const Home:React.FC = () => {
 
         <div className='flex gap-5 pt-5'>
           <a href="/blogs" className='w-fit h-fit bg-blue-500 text-white font-medium py-3 px-6 rounded-md hover:brightness-110 hover:transition duration-300'>Browse Blogs</a>
-          <a href="/login" className='w-fit h-fit border border-slate-200 font-medium py-3 px-6 rounded-md hover:bg-slate-200 hover:transition duration-300'>Browse Blogs</a>
 
         </div>
       </div>
