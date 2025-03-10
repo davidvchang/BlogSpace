@@ -13,5 +13,6 @@ app.use(cors())
 app.use(express.json())
 
 app.use("/api/blogs", BlogsRoutes)
+app.use("/api/users", )
 
 export default app
