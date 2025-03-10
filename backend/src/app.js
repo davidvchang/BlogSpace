@@ -10,6 +10,6 @@ app.use(morgan("dev"))
 app.use(cors())
 app.use(express.json())
 
-app.use("/api/blogs")
+// app.use("/api/blogs")
 
 export default app

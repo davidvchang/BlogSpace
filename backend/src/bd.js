@@ -16,6 +16,6 @@ export const openConnection = async () => {
         await pool.connect()
         console.log("Database connected")
     } catch (ex) {
-        console.log("An error has ocurred: ", ex)
+        console.log("An error has ocurred to connect: ", ex)
     }
 }
