@@ -45,3 +45,17 @@ export const deleteBlog = async (req, res) => {
         res.status(500).json("An error has ocurred: ", ex)
     }
 }
+
+export const updateBlog = async (req, res) => {
+    const {id_blog} = req.query
+    const {title, content, image_url} = req.body
+    try {
+        const existBlog = await pool.query("SELECT COUNT(*) FROM blogs WHERE id_blog = $1", [id_blog])
+        if(existBlog.rows[0].count > 0) {
+            await pool.query("Update blogs set title = $1, content = $2, image_url = $3 WHERE id_blog = $4", [title, content, image_url, id_blog])
+            res.status(204).json("Blog has been updated correctly")
+        }
+    } catch (ex) {
+        res.status(500).json("An error has ocurred: ", ex)
+    }
+}
