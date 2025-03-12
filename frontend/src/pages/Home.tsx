@@ -21,14 +21,21 @@ const Home:React.FC = () => {
   const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
   const [lastBlogData, setLastBlogData] = useState<DataBlogs[]>([])
 
-  const getLastBlogs = async () => {
+  const getLastBlog = async () => {
       const res = await axios.get(URL_BLOGS)
       const lastBlog = res.data.slice(-1)[0];
       setLastBlogData([lastBlog])
   }
 
+  const getRecentsBlogs = async () => {
+    const res = await axios.get(URL_BLOGS)
+    const recentsBlog = res.data.slice(-3)[0];
+    setDataBlogs([recentsBlog])
+  }
+
   useEffect(() => {
-    getLastBlogs()
+    getLastBlog()
+    getRecentsBlogs()
   }, [])
 
   return (
@@ -87,9 +94,10 @@ const Home:React.FC = () => {
         <span className='text-3xl font-bold'>Recent Posts</span>
 
         <div className='flex flex-wrap justify-between'>
-          <PostCard/>
-          <PostCard/>
-          <PostCard/>
+          {dataBlogs.map((blog) => (
+              <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} image={blog.image_url} category={blog.category} date={blog.date.split("T")[0]}/>
+
+          ))}
         </div>
       </div>
     </section>
