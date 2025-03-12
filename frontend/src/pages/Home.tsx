@@ -1,10 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Category from '../components/Category'
 import PostCard from '../components/PostCard';
 import ProfilePostCard from '../components/ProfilePostCard';
 import InformationBlogCard from '../components/InformationBlogCard';
+import axios from 'axios';
+
+interface DataBlogs {
+  id_blog: number,
+  title: string,
+  description: string,
+  image_url: string,
+  category: string,
+  date: string,
+}
 
 const Home:React.FC = () => {
+
+  const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS 
+
+  const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
+  const [lastBlogData, setLastBlogData] = useState<DataBlogs[]>([])
+
+  const getLastBlogs = async () => {
+      const res = await axios.get(URL_BLOGS)
+      const lastBlog = res.data.slice(-1)[0];
+      setLastBlogData([lastBlog])
+  }
+
+  useEffect(() => {
+    getLastBlogs()
+  }, [])
+
   return (
     <section className='flex flex-col w-full py-10 px-5 border-b border-b-slate-200'>
       <div className='flex flex-col items-center justify-center gap-5'>
@@ -19,40 +45,41 @@ const Home:React.FC = () => {
 
       <div className='flex flex-col pt-10 gap-6'>
         <span className='text-3xl font-bold'>Featured Post</span>
-
-        <div className='flex w-full h-96 rounded-md border border-slate-200'>
-          {/* IMAGE */}
-          <div className='w-[50%] bg-red-200'>
-
-          </div>
-
-          <div className='w-[50%] flex flex-col px-10 py-6 gap-3'>
-            <div className='flex gap-3 items-center'>
-              <Category text='Featured' blue_color={true}/>
-              <Category text='Technology'/>
+        {lastBlogData.map((blog) => (
+          <div className='flex w-full h-96 rounded-md border border-slate-200' key={blog.id_blog}>
+            {/* IMAGE */}
+            <div className='w-[50%] overflow-hidden'>
+              <img src={blog.image_url} alt="Cover Blog Image" className='w-full h-full object-cover'/>
             </div>
 
-            <div className='flex flex-col gap-2'>
-              <span className='text-3xl font-semibold'>The Future of Web Development in 2025</span>
-              <span className='text-sm text-slate-500'>Exploring the upcoming trends and technologies that will shape the web development landscape.</span>
-              <span className='pt-2 text-slate-500'>As we approach 2025, the web development field continues to evolve at a rapid pace. From AI-powered development tools to new frameworks and methodologies, this post explores what's on the horizon.</span>
-            </div>
+            <div className='w-[50%] flex flex-col px-10 py-6 gap-3'>
+              <div className='flex gap-3 items-center'>
+                <Category text='Featured' blue_color={true}/>
+                <Category text={blog.category}/>
+              </div>
 
-            <div className='flex items-center justify-between pt-5'>
-              <ProfilePostCard/>
+              <div className='flex flex-col gap-2'>
+                <span className='text-3xl font-semibold'>{blog.title}</span>
+                <span className='text-sm text-slate-500'>{blog.description}</span>
+                <span className='pt-2 text-slate-500'>As we approach 2025, the web development field continues to evolve at a rapid pace. From AI-powered development tools to new frameworks and methodologies, this post explores what's on the horizon.</span>
+              </div>
 
-              <div className='flex gap-5 items-center text-slate-500'>
-                <InformationBlogCard name='date'/>
-                <InformationBlogCard name='comments'/>
+              <div className='flex items-center justify-between pt-5'>
+                <ProfilePostCard/>
+
+                <div className='flex gap-5 items-center text-slate-500'>
+                  <InformationBlogCard name='date' date={blog.date.split("T")[0]}/>
+                  <InformationBlogCard name='comments'/>
+                </div>
+              </div>
+
+              <div className='flex justify-center pt-2'>
+                <a href={`/blog/${blog.id_blog}`} className='w-fit h-fit bg-blue-500 text-white text-sm font-medium py-[10px] px-5 rounded-md hover:brightness-110 hover:transition duration-300'>Read More</a>
               </div>
             </div>
 
-            <div className='flex justify-center pt-2'>
-              <a href="" className='w-fit h-fit bg-blue-500 text-white text-sm font-medium py-[10px] px-5 rounded-md hover:brightness-110 hover:transition duration-300'>Read More</a>
-            </div>
           </div>
-
-        </div>
+        ))}
 
       </div>
 
