@@ -46,7 +46,7 @@ const Home:React.FC = () => {
       <div className='flex flex-col pt-10 gap-6'>
         <span className='text-3xl font-bold'>Featured Post</span>
         {lastBlogData.map((blog) => (
-          <div className='flex w-full h-96 rounded-md border border-slate-200' key={blog.id_blog}>
+          <div className='flex w-full h-96 rounded-md border border-slate-200 overflow-hidden' key={blog.id_blog}>
             {/* IMAGE */}
             <div className='w-[50%] overflow-hidden'>
               <img src={blog.image_url} alt="Cover Blog Image" className='w-full h-full object-cover'/>
