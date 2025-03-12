@@ -22,7 +22,6 @@ const Blogs:React.FC = () => {
     const getBlogs = async () => {
         const res = await axios.get(URL_BLOGS)
         setDataBlogs(res.data)
-        console.log(res.data)
     }
 
     useEffect(() => {

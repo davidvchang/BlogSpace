@@ -16,9 +16,9 @@ const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, descrip
   return (
     <div className='flex flex-col w-[28rem] border border-slate-200 rounded-lg overflow-hidden'>
         {/* IMAGE */}
-        <div className='w-full min-h-48'>
+        <a href={link} className='w-full min-h-48'>
            <img src={image} alt="" className='w-full h-full object-cover'/>
-        </div>
+        </a>
 
         <div className='flex flex-col p-5 gap-3'>
             <Category text={category}/>

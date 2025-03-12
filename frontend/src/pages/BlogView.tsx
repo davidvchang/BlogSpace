@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Category from '../components/Category'
 import ProfilePostCard from '../components/ProfilePostCard'
 import InformationBlogCard from '../components/InformationBlogCard'
@@ -6,41 +6,65 @@ import SectionBlog from '../components/SectionBlog'
 
 import { ArrowLeft } from 'lucide-react';
 import CommentCard from '../components/CommentCard'
+import axios from 'axios'
+
+interface DataBlogs {
+    id_blog: number,
+    title: string,
+    description: string,
+    image_url: string,
+    category: string,
+    date: string,
+}
 
 const BlogView:React.FC = () => {
+
+    const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS 
+
+    const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
+
+    const getBlogs = async () => {
+        const res = await axios.get(URL_BLOGS)
+        setDataBlogs(res.data)
+    }
+
+    useEffect(() => {
+      getBlogs()
+    }, [])
   return (
     <section className='flex flex-col w-full items-center py-10 px-5 border-b border-b-slate-200'>
         <div className='flex flex-col w-[70%]'>
-            <div className='flex flex-col gap-4'>
-                <Category text="Technology" blue_color={true}/>
+            {dataBlogs.map((blog) => (
+                <div className='flex flex-col gap-4' key={blog.id_blog}>
+                    <Category text={blog.category} blue_color={true}/>
 
-                <div className='flex flex-col gap-3'>
-                    <span className='text-4xl font-bold'>The Future of Web Development in 2025</span>
-                    <span className='text-slate-500 text-2xl'>Exploring the upcoming trends and technologies that will shape the web development landscape.</span>
-                </div>
+                    <div className='flex flex-col gap-3'>
+                        <span className='text-4xl font-bold'>{blog.title}</span>
+                        <span className='text-slate-500 text-2xl'>{blog.description}</span>
+                    </div>
 
-                <div className='flex justify-between items-center pt-5'>
-                    <ProfilePostCard blog_view={true}/>
+                    <div className='flex justify-between items-center pt-5'>
+                        <ProfilePostCard blog_view={true}/>
 
-                    <div className='flex gap-5'>
-                        <InformationBlogCard name='date'/> 
-                        <InformationBlogCard name='comments'/> 
+                        <div className='flex gap-5'>
+                            <InformationBlogCard name={blog.date.split("T")[0]}/> 
+                            <InformationBlogCard name='comments'/> 
+                        </div>
+
+                    </div>
+                    <div className='flex flex-col gap-20 py-10 border-b border-b-slate-200'>
+                        {/* IMAGE */}
+                        <div className='w-full h-[28rem] rounded-lg overflow-hidden'>
+                            <img src={blog.image_url} alt="Cover Image" className='w-full h-full object-cover'/>
+                        </div>
+
+                        <div className='flex flex-col gap-20'>
+                            <SectionBlog/>
+                        </div>
                     </div>
 
                 </div>
-                <div className='flex flex-col gap-20 py-10 border-b border-b-slate-200'>
-                    {/* IMAGE */}
-                    <div className='w-full h-[28rem] bg-red-200 rounded-lg'>
-
-                    </div>
-
-                    <div className='flex flex-col gap-20'>
-                        <SectionBlog/>
-                        <SectionBlog/>
-                    </div>
-                </div>
-
-            </div>
+            ))}
 
             <div className='flex justify-end items-center py-3 border-b border-b-slate-200'>
                 <div className='flex gap-1 items-center w-fit h-fit px-3 py-2 rounded-md hover:bg-slate-100 hover:transition duration-300'>
