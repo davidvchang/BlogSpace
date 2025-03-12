@@ -25,7 +25,7 @@ const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, descrip
             
             <div className='flex flex-col gap-1'>
                 <a href={link} className='text-xl font-semibold hover:underline hover:transition duration-300'>{title}</a>
-                <p className='text-sm text-slate-500'>{description}</p>
+                <p className='text-sm text-slate-500 line-clamp-2'>{description}</p>
             </div>
 
             <ProfilePostCard/>

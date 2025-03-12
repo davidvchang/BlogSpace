@@ -51,7 +51,7 @@ const Blogs:React.FC = () => {
             </div>
             <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-5' >
                 {dataBlogs.map((blog) => (
-                        <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} key={blog.id_blog}/>
+                        <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]}/>
                 ))}
             
             </div>

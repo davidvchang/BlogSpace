@@ -11,7 +11,13 @@ interface DataBlogs {
   description: string,
   image_url: string,
   category: string,
+  sections: SectionsBlog[]
   date: string,
+}
+
+interface SectionsBlog {
+  title: string;
+  paragraphs: string[];
 }
 
 const Home:React.FC = () => {
@@ -29,8 +35,9 @@ const Home:React.FC = () => {
 
   const getRecentsBlogs = async () => {
     const res = await axios.get(URL_BLOGS)
-    const recentsBlog = res.data.slice(-3)[0];
-    setDataBlogs([recentsBlog])
+    const recentsBlog = res.data.reverse().slice(-3);
+    console.log([recentsBlog])
+    setDataBlogs(recentsBlog)
   }
 
   useEffect(() => {
@@ -93,10 +100,9 @@ const Home:React.FC = () => {
       <div className='flex flex-col pt-20 gap-6'>
         <span className='text-3xl font-bold'>Recent Posts</span>
 
-        <div className='flex flex-wrap justify-between'>
-          {dataBlogs.map((blog) => (
-              <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} image={blog.image_url} category={blog.category} date={blog.date.split("T")[0]}/>
-
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-between'>
+          {dataBlogs.map((b) => (
+              <PostCard key={b.id_blog} link={`/blog/${b.id_blog}`} title={b.title} description={b.description} image={b.image_url} category={b.category} date={b.date.split("T")[0]}/>
           ))}
         </div>
       </div>
