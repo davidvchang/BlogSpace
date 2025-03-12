@@ -14,7 +14,13 @@ interface DataBlogs {
     description: string,
     image_url: string,
     category: string,
+    sections: SectionsBlog[],
     date: string,
+}
+
+interface SectionsBlog {
+    title: string;
+    paragraphs: string[];
 }
 
 const BlogView:React.FC = () => {
@@ -26,6 +32,7 @@ const BlogView:React.FC = () => {
     const getBlogs = async () => {
         const res = await axios.get(URL_BLOGS)
         setDataBlogs(res.data)
+        console.log(res.data)
     }
 
     useEffect(() => {
@@ -59,7 +66,9 @@ const BlogView:React.FC = () => {
                         </div>
 
                         <div className='flex flex-col gap-20'>
-                            <SectionBlog/>
+                            {blog.sections.map((section, index) => (
+                                <SectionBlog key={index} title={section.title} paragraphs={section.paragraphs}/>
+                            ))}
                         </div>
                     </div>
 
