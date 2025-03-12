@@ -1,9 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import InputSearch from '../components/InputSearch'
 import PostCard from '../components/PostCard'
 import CategoryBlogs from '../components/CategoryBlogs'
+import axios from 'axios'
+
+interface DataBlogs {
+    id_blog: number,
+    title: string,
+    description: string,
+    image_url: string,
+    category: string,
+    date: string,
+}
 
 const Blogs:React.FC = () => {
+
+    const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS 
+
+    const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
+
+    const getBlogs = async () => {
+        const res = await axios.get(URL_BLOGS)
+        setDataBlogs(res.data)
+        console.log(res.data)
+    }
+
+    useEffect(() => {
+      getBlogs()
+    }, [])
+    
+
   return (
     <section className='flex flex-col w-full py-10 px-5 border-b border-b-slate-200'>
         <div className='flex justify-between items-center pb-10'>
@@ -24,15 +50,11 @@ const Blogs:React.FC = () => {
                 <CategoryBlogs text='Back-End'/>
 
             </div>
-
-            <div className='flex flex-wrap justify-between gap-y-5'>
-                <PostCard/>
-                <PostCard/>
-                <PostCard/>
-                <PostCard/>
-                <PostCard/>
-                <PostCard/>
-            </div>
+            {dataBlogs.map((blog) => (
+                <div className='flex flex-wrap justify-between gap-y-5' key={blog.id_blog}>
+                    <PostCard link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} key={blog.id_blog}/>
+                </div>
+            ))}
         </div>
     </section>
   )
