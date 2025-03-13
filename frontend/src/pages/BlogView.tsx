@@ -7,6 +7,7 @@ import SectionBlog from '../components/SectionBlog'
 import { ArrowLeft } from 'lucide-react';
 import CommentCard from '../components/CommentCard'
 import axios from 'axios'
+import { useParams } from 'react-router-dom'
 
 interface DataBlogs {
     id_blog: number,
@@ -27,12 +28,13 @@ const BlogView:React.FC = () => {
 
     const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS 
 
+    const {id_blog} = useParams()
+
     const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
 
     const getBlogs = async () => {
-        const res = await axios.get(URL_BLOGS)
+        const res = await axios.get(URL_BLOGS + id_blog)
         setDataBlogs(res.data)
-        console.log(res.data)
     }
 
     useEffect(() => {

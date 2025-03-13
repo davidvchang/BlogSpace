@@ -21,7 +21,7 @@ export const postBlog = async (req, res) => {
 }
 
 export const getOneBlog = async (req, res) => {
-    const {id_blog} = req.query
+    const {id_blog} = req.params
     try {
         const existBlog = await pool.query("SELECT COUNT(*) FROM blogs WHERE id_blog = $1", [id_blog])
         if(existBlog.rows[0].count > 0) {
