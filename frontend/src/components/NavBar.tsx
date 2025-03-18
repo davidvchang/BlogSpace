@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Nav from './Nav'
-import { Menu, LogOut } from 'lucide-react';
+import { Menu, LogOut, X } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion'
 
 const NavBar:React.FC = () => {
 
     const token = localStorage.getItem('token');
 
+    const [toggleMenu, setToggleMenu] = useState<boolean>(false)
+
     const handleLogout = () => {
         localStorage.removeItem("token");
         window.location.href = "/";
+    }
+
+    const handleToggleMenu = () => {
+        setToggleMenu(!toggleMenu)
     }
 
   return (
@@ -34,20 +41,40 @@ const NavBar:React.FC = () => {
                         </div>
                     </div>
 
-                    <button className='w-fit h-fit hover:bg-slate-200 hover:transition duration-300 rounded-md'>
-                        <Menu className='w-8 h-8'/>
+                    <button className='w-fit h-fit hover:bg-slate-200 hover:transition duration-300 rounded-md' onClick={handleToggleMenu}>
+                        {toggleMenu === true ? (
+                            <X className='w-8 h-8'/>
+                        ) : (
+                            <Menu className='w-8 h-8'/>
+                        )}
+                        
                     </button>
 
-                    <div className='flex flex-col absolute top-[54px] -right-10 p-5 bg-slate-100 rounded-md shadow-xl w-62 ' style={{height: "calc(100vh - 64px)"}}>
-                        <div className='flex flex-col h-full'>
+                    <div className='absolute top-full right-0'>
+                        <AnimatePresence>
+                            {toggleMenu && (
+                                <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, scale: 1}}
+                                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                                    className="flex flex-col absolute top-3 -right-10 p-5 bg-slate-100 rounded-md shadow-xl w-72"
+                                    style={{ minHeight: "calc(100vh - 64px)" }}
+                                    >
+                                        <div className='flex flex-col h-full'>
 
-                        </div>
+                                        </div>
 
-                        <button className='flex gap-2 items-center bg-red-500 w-full h-fit px-5 py-3 rounded-md text-white hover:bg-red-600 hover:transition duration-300 cursor-pointer' onClick={handleLogout}>
-                            <LogOut className='w-6 h-6'/>
-                            <span>Logout</span>
-                        </button>
+                                        <button className='flex gap-2 items-center bg-red-500 w-full h-fit px-5 py-3 rounded-md text-white hover:bg-red-600 hover:transition duration-300 cursor-pointer' onClick={handleLogout}>
+                                            <LogOut className='w-6 h-6'/>
+                                            <span>Logout</span>
+                                        </button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
                     </div>
+
 
                 </div>
             ) : (
