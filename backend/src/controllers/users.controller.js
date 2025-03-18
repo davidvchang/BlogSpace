@@ -1,5 +1,9 @@
 import {pool} from '../bd.js'
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const getUsers = async (req, res) => {
     try {
@@ -18,6 +22,34 @@ export const postUser = async (req, res) => {
 
         await pool.query("INSERT INTO users (name, last_name, email, password) VALUES ($1, $2, $3, $4)", [name, last_name, email, hashedPassword])
         res.status(201).json("Blog has been added correctly")
+    } catch (ex) {
+        res.status(500).json("An error has ocurred: ", ex)
+    }
+}
+
+export const loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    try {
+        const result = await pool.query("SELECT * FROM users WHERE email = $1", [email])
+        if (result.rows.length === 0) {
+            return res.status(401).json({ message: "Invalid email or password" });
+        }
+
+        const user = result.rows[0];
+
+        const validPassword = await bcrypt.compare(password, user.password);
+        if(!validPassword) {
+            return res.status(401).json({ message: "Invalid email or password" });
+        }
+
+        const token = jwt.sign(
+            { id: user.id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" } // El token expira en 1 hora
+        );
+
+        res.json({ message: "Login successful", token });
     } catch (ex) {
         res.status(500).json("An error has ocurred: ", ex)
     }
