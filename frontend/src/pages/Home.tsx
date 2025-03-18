@@ -36,7 +36,6 @@ const Home:React.FC = () => {
   const getRecentsBlogs = async () => {
     const res = await axios.get(URL_BLOGS)
     const recentsBlog = res.data.reverse().slice(-3);
-    console.log([recentsBlog])
     setDataBlogs(recentsBlog)
   }
 
