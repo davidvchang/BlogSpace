@@ -18,10 +18,20 @@ const Blogs:React.FC = () => {
     const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS 
 
     const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
+    const [categories, setCategories] = useState<[]>([])
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
     const getBlogs = async () => {
         const res = await axios.get(URL_BLOGS)
         setDataBlogs(res.data)
+
+        const category = res.data.map(blog => blog.category).filter((cat, i, arr) => arr.indexOf(cat) === i);
+        console.log(category)
+        setCategories(category);
+    }
+
+    const handleSelectedCategory = (category: string) => {
+        setSelectedCategory(prev => (prev === category ? null : category));
     }
 
     useEffect(() => {
@@ -42,11 +52,10 @@ const Blogs:React.FC = () => {
 
         <div className='flex flex-col gap-3'>
             <div className='flex w-fit rounded-md overflow-hidden bg-slate-100 p-1'>
-                <CategoryBlogs text='All' selected={true}/>
-                <CategoryBlogs text='Technology'/>
-                <CategoryBlogs text='Development'/>
-                <CategoryBlogs text='Front-End'/>
-                <CategoryBlogs text='Back-End'/>
+                <CategoryBlogs text='All' onClick={() => setSelectedCategory(null)}  selected={selectedCategory === null} />
+                {categories.map((c, index) => (
+                    <CategoryBlogs key={index} text={c} onClick={() => handleSelectedCategory(c)}  selected={selectedCategory === c} />
+                ))}
 
             </div>
             <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-5' >
