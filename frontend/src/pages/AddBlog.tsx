@@ -1,5 +1,6 @@
 import React from 'react'
-import { Image, CirclePlus } from 'lucide-react';
+import { Image, CirclePlus, Trash2 } from 'lucide-react';
+import SectionAddBlog from '../components/SectionAddBlog';
 
 const AddBlog:React.FC = () => {
   return (
@@ -35,6 +36,11 @@ const AddBlog:React.FC = () => {
                     </button>
                 </div>
 
+                <div className='flex flex-col gap-5'>
+                    <SectionAddBlog/>
+                    <SectionAddBlog/>
+                    <SectionAddBlog/>
+                </div>
             </div>
             <button type="submit" className='w-full h-fit px-5 py-3 bg-blue-500 text-white rounded-md text-sm font-semibold'>Create Blog</button>
         </form>
