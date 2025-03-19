@@ -2,9 +2,17 @@ import React, { useState } from 'react'
 import { Image, CirclePlus } from 'lucide-react';
 import SectionAddBlog from '../components/SectionAddBlog';
 
+interface BlogPost {
+    coverUrl: string;
+    title: string;
+    description: string;
+    sections: BlogSection[];
+  }
+
 const AddBlog:React.FC = () => {
 
     const [sections, setSections] = useState<number[]>([])
+    const [image, setImage] = useState<string>("")
 
     const handleAddSection = (e: React.FormEvent) => {
         e.preventDefault()
@@ -21,13 +29,18 @@ const AddBlog:React.FC = () => {
             <span className='text-3xl font-semibold'>Create New Blog</span>
 
             <div className='flex flex-col gap-8'>
-                <div className='bg-gray-200 w-full h-64 rounded-md overflow-hidden'>
-                    <img src="" alt="Image Blog" className='w-full h-full object-contain'/>
+                <div className='bg-gray-200 w-full h-64 rounded-md overflow-hidden flex justify-center items-center'>
+                    {image ? (
+                        <img src={image} alt="Image Blog" className='w-full h-full object-cover'/>
+
+                    ) : (
+                        <Image className='w-12 h-12 text-slate-400'/>
+                    )} 
                 </div>
 
                 <div className='flex flex-col gap-2'>
                     <label htmlFor="image_url" className='text-sm'>Cover Image URL</label>
-                    <input type="text" name="image_url" id="image_url" placeholder='https://example.com/image.jpg' className='px-5 py-2 border bg-white border-slate-200 rounded-md' required/>
+                    <input type="text" name="image_url" id="image_url" value={image} onChange={(e) => setImage(e.target.value)} placeholder='https://example.com/image.jpg' className='px-5 py-2 border bg-white border-slate-200 rounded-md' required/>
                 </div>
 
                 <div className='flex flex-col gap-2'>
