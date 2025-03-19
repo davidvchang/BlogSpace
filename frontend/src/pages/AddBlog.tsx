@@ -15,7 +15,7 @@ interface PropsDataBlog {
 
 interface PropsSections {
     title: string,
-    paragraphs: string
+    paragraphs: string[]
 }
 
 
@@ -38,7 +38,7 @@ const AddBlog:React.FC = () => {
 
     const handleAddSection = (e: React.FormEvent) => {
         e.preventDefault()
-        setSections([...sections, { title: "", paragraphs: "" }])
+        setSections([...sections, { title: "", paragraphs: []}])
     }
 
     const handleDeleteSection = (id: number) => {
@@ -55,7 +55,7 @@ const AddBlog:React.FC = () => {
         setSections(updatedSections);
     };
 
-    const handleChangeSectionContent = (index: number, value: string) => {
+    const handleChangeSectionContent = (index: number, value: []) => {
         const updatedSections = [...sections];
         updatedSections[index].paragraphs = value;
         setSections(updatedSections);

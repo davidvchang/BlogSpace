@@ -68,9 +68,14 @@ const BlogView:React.FC = () => {
                         </div>
 
                         <div className='flex flex-col gap-20'>
-                            {blog.sections.map((section, index) => (
-                                <SectionBlog key={index} title={section.title} paragraphs={section.paragraphs}/>
-                            ))}
+                            {blog.sections.map((section, index) => {
+                                const paragraphs = Array.isArray(section.paragraphs) ? section.paragraphs : [section.paragraphs];
+                                
+                                return (
+                                    <SectionBlog key={index} title={section.title} paragraphs={paragraphs}/>
+
+                                )
+                            })}
                         </div>
                     </div>
 
