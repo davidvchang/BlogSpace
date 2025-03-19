@@ -6,6 +6,7 @@ import axios from 'axios'
 
 interface DataBlogs {
     id_blog: number,
+    user_id: number,
     title: string,
     description: string,
     image_url: string,
@@ -13,11 +14,20 @@ interface DataBlogs {
     date: string,
 }
 
+interface PropsInfoUser {
+    id_user: number,
+    email: string,
+    name: string,
+    last_name: string
+}
+
 const Blogs:React.FC = () => {
 
-    const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS 
+    const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS
+    const URL_USERS = import.meta.env.VITE_URL_USERS
 
     const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
+    const [dataUsers, setDataUsers] = useState<PropsInfoUser[]>([])
     const [categories, setCategories] = useState<[]>([])
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
@@ -29,12 +39,18 @@ const Blogs:React.FC = () => {
         setCategories(category);
     }
 
+    const getNameUserOfBlog = async () => {
+        const res = await axios.get(URL_USERS)
+        setDataUsers(res.data)
+    }
+
     const handleSelectedCategory = (category: string) => {
         setSelectedCategory(prev => (prev === category ? null : category));
     }
 
     useEffect(() => {
       getBlogs()
+      getNameUserOfBlog()
     }, [])
     
 
@@ -58,9 +74,12 @@ const Blogs:React.FC = () => {
 
             </div>
             <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-5' >
-                {dataBlogs.map((blog) => (
-                        <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]}/>
-                ))}
+                {dataBlogs.map((blog) => {
+                    const authorBlog = dataUsers.find(user => user.id_user === blog.user_id);
+                    return (
+                        <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
+                    )
+                })}
             
             </div>
         </div>

@@ -1,10 +1,11 @@
 import React from 'react'
 
 type propsProfile = {
-  blog_view?: boolean
+  blog_view?: boolean,
+  author: string
 }
 
-const ProfilePostCard:React.FC<propsProfile> = ({blog_view}) => {
+const ProfilePostCard:React.FC<propsProfile> = ({blog_view, author}) => {
   return (
     <>
       {blog_view === true ? (
@@ -14,7 +15,7 @@ const ProfilePostCard:React.FC<propsProfile> = ({blog_view}) => {
 
             </div>
 
-            <span className='font-medium'>Jane Doe</span>
+            <span className='font-medium'>{author}</span>
         </div>
       ) : (
         <div className='flex gap-3 items-center'>
@@ -23,7 +24,7 @@ const ProfilePostCard:React.FC<propsProfile> = ({blog_view}) => {
 
             </div>
 
-            <span>Jane Doe</span>
+            <span>{author}</span>
         </div>
 
       )}

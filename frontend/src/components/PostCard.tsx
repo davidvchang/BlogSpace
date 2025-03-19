@@ -9,10 +9,11 @@ interface PropsPostCard {
   link: string,
   title: string,
   description: string,
-  date: string
+  date: string,
+  author: string
 }
 
-const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, description, date}) => {
+const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, description, date, author}) => {
   return (
     <div className='flex flex-col w-[28rem] border border-slate-200 rounded-lg overflow-hidden'>
         {/* IMAGE */}
@@ -28,7 +29,7 @@ const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, descrip
                 <p className='text-sm text-slate-500 line-clamp-2'>{description}</p>
             </div>
 
-            <ProfilePostCard/>
+            <ProfilePostCard author={author}/>
 
             <div className='flex justify-between pt-2'>
                 <InformationBlogCard date={date} name='date'/>
