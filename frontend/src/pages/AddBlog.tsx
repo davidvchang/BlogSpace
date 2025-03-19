@@ -1,8 +1,20 @@
-import React from 'react'
-import { Image, CirclePlus, Trash2 } from 'lucide-react';
+import React, { useState } from 'react'
+import { Image, CirclePlus } from 'lucide-react';
 import SectionAddBlog from '../components/SectionAddBlog';
 
 const AddBlog:React.FC = () => {
+
+    const [sections, setSections] = useState<number[]>([])
+
+    const handleAddSection = (e: React.FormEvent) => {
+        e.preventDefault()
+        setSections([...sections, sections.length + 1])
+    }
+
+    const handleDeleteSection = (id: number) => {
+        setSections(sections.filter(sectionId => sectionId !== id))
+    }
+
   return (
     <section className='flex flex-col w-full items-center bg-slate-50'>
         <form className='w-[50%] p-5 flex flex-col gap-8'>
@@ -30,16 +42,16 @@ const AddBlog:React.FC = () => {
 
                 <div className='flex w-full items-center justify-between'>
                     <span className='font-semibold text-xl'>Sections</span>
-                    <button className='flex items-center w-fit h-fit px-5 py-3 bg-blue-500 text-white rounded-md gap-2 text-sm font-medium hover:bg-blue-600 hover:transition duration-300 cursor-pointer'>
+                    <button className='flex items-center w-fit h-fit px-5 py-3 bg-blue-500 text-white rounded-md gap-2 text-sm font-medium hover:bg-blue-600 hover:transition duration-300 cursor-pointer' onClick={handleAddSection}>
                         <CirclePlus className='w-4 h-4'/>
                         <span>Add Section</span>
                     </button>
                 </div>
 
                 <div className='flex flex-col gap-5'>
-                    <SectionAddBlog/>
-                    <SectionAddBlog/>
-                    <SectionAddBlog/>
+                    {sections.map((id) => (
+                        <SectionAddBlog key={id} onClickDeleteSection={() => handleDeleteSection(id)} number={id}/>
+                    ))}
                 </div>
             </div>
             <button type="submit" className='w-full h-fit px-5 py-3 bg-blue-500 text-white rounded-md text-sm font-semibold'>Create Blog</button>
