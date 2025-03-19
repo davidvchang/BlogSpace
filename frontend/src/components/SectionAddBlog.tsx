@@ -3,10 +3,14 @@ import { Trash2 } from 'lucide-react';
 
 interface PropsSectionAdd {
     onClickDeleteSection: () => void,
-    number: number
+    number: number,
+    value_title: string
+    value_content: string,
+    change_title: (e: React.ChangeEvent<HTMLInputElement>) => void,
+    change_content: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-const SectionAddBlog:React.FC<PropsSectionAdd> = ({onClickDeleteSection, number}) => {
+const SectionAddBlog:React.FC<PropsSectionAdd> = ({onClickDeleteSection, number, value_title, value_content, change_title, change_content}) => {
   return (
     <div className='flex flex-col p-5 bg-white shadow-sm rounded-md gap-5'>
         <div className='flex items-center justify-between'>
@@ -17,12 +21,12 @@ const SectionAddBlog:React.FC<PropsSectionAdd> = ({onClickDeleteSection, number}
         <div className='flex flex-col gap-5'>
             <div className='flex flex-col gap-2'>
                 <label htmlFor="title" className='text-sm'>Title</label>
-                <input type="text" name="title" id="title" placeholder='Enter section title' className='px-5 py-2 bg-white border border-slate-200 rounded-md' required/>
+                <input type="text" name="title" value={value_title} onChange={change_title} id="title" placeholder='Enter section title' className='px-5 py-2 bg-white border border-slate-200 rounded-md' required/>
             </div>
 
             <div className='flex flex-col gap-2'>
                 <label htmlFor="content" className='text-sm'>Section Content</label>
-                <textarea name="content" id="content" placeholder='Enter section content' className='px-5 py-2 bg-white border border-slate-200 rounded-md min-h-28' required/>
+                <textarea name="content" id="content" value={value_content} onChange={change_content} placeholder='Enter section content' className='px-5 py-2 bg-white border border-slate-200 rounded-md min-h-28' required/>
             </div>
         </div>
     </div>
