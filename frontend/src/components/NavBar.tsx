@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Nav from './Nav'
 import { Menu, LogOut, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion'
 import NavLogged from './NavLogged';
 import { Newspaper, User } from 'lucide-react';
+import axios from 'axios';
 
 const NavBar:React.FC = () => {
+
+    const URL_USERS = import.meta.env.VITE_URL_USERS
 
     const token = localStorage.getItem('token');
 
@@ -19,6 +22,23 @@ const NavBar:React.FC = () => {
     const handleToggleMenu = () => {
         setToggleMenu(!toggleMenu)
     }
+
+    const getInfoUserLogged = async () => {
+        const res = await axios.get(`${URL_USERS}/autenticatedUser`, {
+            headers: {
+            'Authorization': `Bearer ${token}`,
+
+            },
+        })
+
+        console.log("DATOS USER: ", res.data)
+    }
+
+    useEffect(() => {
+        getInfoUserLogged()
+    }, [])
+    
+
 
   return (
     <div className='w-full h-16 flex justify-between items-center px-10 border-b border-b-slate-200 bg-white fixed z-99'>
