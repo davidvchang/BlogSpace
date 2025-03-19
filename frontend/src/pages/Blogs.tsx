@@ -26,7 +26,6 @@ const Blogs:React.FC = () => {
         setDataBlogs(res.data)
 
         const category = res.data.map(blog => blog.category).filter((cat, i, arr) => arr.indexOf(cat) === i);
-        console.log(category)
         setCategories(category);
     }
 
