@@ -6,6 +6,13 @@ import NavLogged from './NavLogged';
 import { Newspaper, User } from 'lucide-react';
 import axios from 'axios';
 
+interface PropsInfoUser {
+    id: number,
+    email: string,
+    name: string,
+    last_name: string
+}
+
 const NavBar:React.FC = () => {
 
     const URL_USERS = import.meta.env.VITE_URL_USERS
@@ -13,6 +20,7 @@ const NavBar:React.FC = () => {
     const token = localStorage.getItem('token');
 
     const [toggleMenu, setToggleMenu] = useState<boolean>(false)
+    const [dataUser, setDataUser] = useState<PropsInfoUser[]>([])
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -30,12 +38,13 @@ const NavBar:React.FC = () => {
 
             },
         })
-
-        console.log("DATOS USER: ", res.data)
+        setDataUser(res.data)
     }
 
     useEffect(() => {
-        getInfoUserLogged()
+        if(token) {
+            getInfoUserLogged()
+        }
     }, [])
     
 
@@ -57,7 +66,7 @@ const NavBar:React.FC = () => {
             {token ? (
                 <div className='flex items-center gap-5 relative'>
                     <div className='flex items-center gap-3'>
-                        <span className='font-light'>Hello, <strong className='font-semibold'>Prueba</strong></span>
+                        <span className='font-light'>Hello, <strong className='font-semibold'>{dataUser?.name} {dataUser?.last_name}</strong></span>
                         <div className='min-w-10 min-h-10 bg-red-200 rounded-full'>
 
                         </div>
@@ -89,7 +98,7 @@ const NavBar:React.FC = () => {
 
                                                 </div>  
 
-                                                <span className='text-lg font-medium'>David Valenzuela</span>
+                                                <span className='text-lg font-medium'>{dataUser?.name} {dataUser?.last_name}</span>
                                             </div>
                                             <NavLogged icon={<Newspaper className='w-6 h-6'/>} text='My Blogs' link='/user/blogs'/>
                                             <NavLogged icon={<User className='w-6 h-6'/>} text='Profile' link='/user/profile'/>
