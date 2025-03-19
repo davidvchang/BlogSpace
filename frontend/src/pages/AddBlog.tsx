@@ -135,7 +135,7 @@ const AddBlog:React.FC = () => {
                     ))}
                 </div>
             </div>
-            <button type="submit" className='w-full h-fit px-5 py-3 bg-blue-500 text-white rounded-md text-sm font-semibold'>Create Blog</button>
+            <button type="submit" className='w-full h-fit px-5 py-3 bg-blue-500 text-white rounded-md text-sm font-semibold hover:bg-blue-600 hover:transition dura cursor-pointer'>Create Blog</button>
         </form>
       
     </section>
