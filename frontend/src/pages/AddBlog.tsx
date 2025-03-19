@@ -15,17 +15,17 @@ const AddBlog:React.FC = () => {
 
                 <div className='flex flex-col gap-2'>
                     <label htmlFor="image_url" className='text-sm'>Cover Image URL</label>
-                    <input type="text" name="image_url" id="image_url" placeholder='https://example.com/image.jpg' className='px-5 py-2 border bg-white border-slate-200 rounded-md'/>
+                    <input type="text" name="image_url" id="image_url" placeholder='https://example.com/image.jpg' className='px-5 py-2 border bg-white border-slate-200 rounded-md' required/>
                 </div>
 
                 <div className='flex flex-col gap-2'>
                     <label htmlFor="title" className='text-sm'>Title</label>
-                    <input type="text" name="title" id="title" placeholder='Enter blog title' className='px-5 py-2 bg-white border border-slate-200 rounded-md'/>
+                    <input type="text" name="title" id="title" placeholder='Enter blog title' className='px-5 py-2 bg-white border border-slate-200 rounded-md' required/>
                 </div>
 
                 <div className='flex flex-col gap-2'>
                     <label htmlFor="description" className='text-sm'>Description</label>
-                    <textarea name="description" id="description" placeholder='Enter blog description' className='px-5 py-2 bg-white border border-slate-200 rounded-md min-h-28'/>
+                    <textarea name="description" id="description" placeholder='Enter blog description' className='px-5 py-2 bg-white border border-slate-200 rounded-md min-h-28' required/>
                 </div>
 
                 <div className='flex w-full items-center justify-between'>

@@ -12,12 +12,12 @@ const SectionAddBlog:React.FC = () => {
         <div className='flex flex-col gap-5'>
             <div className='flex flex-col gap-2'>
                 <label htmlFor="title" className='text-sm'>Title</label>
-                <input type="text" name="title" id="title" placeholder='Enter section title' className='px-5 py-2 bg-white border border-slate-200 rounded-md'/>
+                <input type="text" name="title" id="title" placeholder='Enter section title' className='px-5 py-2 bg-white border border-slate-200 rounded-md' required/>
             </div>
 
             <div className='flex flex-col gap-2'>
                 <label htmlFor="content" className='text-sm'>Section Content</label>
-                <textarea name="content" id="content" placeholder='Enter section content' className='px-5 py-2 bg-white border border-slate-200 rounded-md min-h-28'/>
+                <textarea name="content" id="content" placeholder='Enter section content' className='px-5 py-2 bg-white border border-slate-200 rounded-md min-h-28' required/>
             </div>
         </div>
     </div>
