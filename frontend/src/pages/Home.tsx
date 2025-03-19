@@ -7,6 +7,7 @@ import axios from 'axios';
 
 interface DataBlogs {
   id_blog: number,
+  user_id: number,
   title: string,
   description: string,
   image_url: string,
@@ -20,11 +21,20 @@ interface SectionsBlog {
   paragraphs: string[];
 }
 
+interface PropsInfoUser {
+  id_user: number,
+  email: string,
+  name: string,
+  last_name: string
+}
+
 const Home:React.FC = () => {
 
   const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS 
+  const URL_USERS = import.meta.env.VITE_URL_USERS
 
   const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
+  const [dataUsers, setDataUsers] = useState<PropsInfoUser[]>([])
   const [lastBlogData, setLastBlogData] = useState<DataBlogs[]>([])
 
   const getLastBlog = async () => {
@@ -39,9 +49,15 @@ const Home:React.FC = () => {
     setDataBlogs(recentsBlog)
   }
 
+  const getNameUserOfBlog = async () => {
+    const res = await axios.get(URL_USERS)
+    setDataUsers(res.data)
+}
+
   useEffect(() => {
     getLastBlog()
     getRecentsBlogs()
+    getNameUserOfBlog()
   }, [])
 
   return (
@@ -58,41 +74,45 @@ const Home:React.FC = () => {
 
       <div className='flex flex-col pt-10 gap-6'>
         <span className='text-3xl font-bold'>Featured Post</span>
-        {lastBlogData.map((blog) => (
-          <div className='flex w-full h-96 rounded-md border border-slate-200 overflow-hidden' key={blog.id_blog}>
-            {/* IMAGE */}
-            <div className='w-[50%] overflow-hidden'>
-              <img src={blog.image_url} alt="Cover Blog Image" className='w-full h-full object-cover'/>
-            </div>
-
-            <div className='w-[50%] flex flex-col px-10 py-6 gap-3'>
-              <div className='flex gap-3 items-center'>
-                <Category text='Featured' blue_color={true}/>
-                <Category text={blog.category}/>
+        {lastBlogData.map((blog) => {
+          const authorBlog = dataUsers.find(user => user.id_user === blog.user_id);
+          return (
+            <div className='flex w-full h-96 rounded-md border border-slate-200 overflow-hidden' key={blog.id_blog}>
+              {/* IMAGE */}
+              <div className='w-[50%] overflow-hidden'>
+                <img src={blog.image_url} alt="Cover Blog Image" className='w-full h-full object-cover'/>
               </div>
 
-              <div className='flex flex-col gap-2'>
-                <span className='text-3xl font-semibold'>{blog.title}</span>
-                <span className='text-sm text-slate-500'>{blog.description}</span>
-                <span className='pt-2 text-slate-500'>As we approach 2025, the web development field continues to evolve at a rapid pace. From AI-powered development tools to new frameworks and methodologies, this post explores what's on the horizon.</span>
-              </div>
+              <div className='w-[50%] flex flex-col px-10 py-6 gap-3'>
+                <div className='flex gap-3 items-center'>
+                  <Category text='Featured' blue_color={true}/>
+                  <Category text={blog.category}/>
+                </div>
 
-              <div className='flex items-center justify-between pt-5'>
-                <ProfilePostCard/>
+                <div className='flex flex-col gap-2'>
+                  <span className='text-3xl font-semibold'>{blog.title}</span>
+                  <span className='text-sm text-slate-500'>{blog.description}</span>
+                  <span className='pt-2 text-slate-500'>As we approach 2025, the web development field continues to evolve at a rapid pace. From AI-powered development tools to new frameworks and methodologies, this post explores what's on the horizon.</span>
+                </div>
 
-                <div className='flex gap-5 items-center text-slate-500'>
-                  <InformationBlogCard name='date' date={blog.date.split("T")[0]}/>
-                  <InformationBlogCard name='comments'/>
+                <div className='flex items-center justify-between pt-5'>
+                  <ProfilePostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} image={blog.image_url} category={blog.category} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
+
+                  <div className='flex gap-5 items-center text-slate-500'>
+                    <InformationBlogCard name='date' date={blog.date.split("T")[0]}/>
+                    <InformationBlogCard name='comments'/>
+                  </div>
+                </div>
+
+                <div className='flex justify-center pt-2'>
+                  <a href={`/blog/${blog.id_blog}`} className='w-fit h-fit bg-blue-500 text-white text-sm font-medium py-[10px] px-5 rounded-md hover:brightness-110 hover:transition duration-300'>Read More</a>
                 </div>
               </div>
 
-              <div className='flex justify-center pt-2'>
-                <a href={`/blog/${blog.id_blog}`} className='w-fit h-fit bg-blue-500 text-white text-sm font-medium py-[10px] px-5 rounded-md hover:brightness-110 hover:transition duration-300'>Read More</a>
-              </div>
             </div>
 
-          </div>
-        ))}
+          )
+        })}
 
       </div>
 
@@ -100,9 +120,12 @@ const Home:React.FC = () => {
         <span className='text-3xl font-bold'>Recent Posts</span>
 
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-between'>
-          {dataBlogs.map((b) => (
-              <PostCard key={b.id_blog} link={`/blog/${b.id_blog}`} title={b.title} description={b.description} image={b.image_url} category={b.category} date={b.date.split("T")[0]}/>
-          ))}
+          {dataBlogs.map((b) => {
+            const authorBlog = dataUsers.find(user => user.id_user === b.user_id);
+            return (
+              <PostCard key={b.id_blog} link={`/blog/${b.id_blog}`} title={b.title} description={b.description} image={b.image_url} category={b.category} date={b.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
+            )
+          })}
         </div>
       </div>
     </section>
