@@ -3,7 +3,7 @@ import React from 'react'
 
 type PropsInformation = {
     name: string,
-    date?: string
+    date?: string,
 }
 
 const InformationBlogCard:React.FC<PropsInformation> = ({name, date}) => {

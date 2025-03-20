@@ -73,7 +73,7 @@ const BlogView:React.FC = () => {
                             <ProfilePostCard blog_view={true} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
 
                             <div className='flex gap-5'>
-                                <InformationBlogCard name={blog.date.split("T")[0]}/> 
+                                <InformationBlogCard name='date' date={blog.date.split("T")[0]}/> 
                                 <InformationBlogCard name='comments'/> 
                             </div>
 
