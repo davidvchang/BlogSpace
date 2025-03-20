@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import InputSearch from '../components/InputSearch'
 import PostCard from '../components/PostCard'
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 interface DataBlogs {
     id_blog: number,
@@ -23,6 +24,7 @@ interface PropsInfoUser {
 const BlogsUser:React.FC = () => {
 
     const URL_USERS:string = import.meta.env.VITE_URL_USERS
+    const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS
 
     const token = localStorage.getItem('token');
 
@@ -43,12 +45,42 @@ const BlogsUser:React.FC = () => {
         setDataUsers(res.data)
     }
 
+    const deleteBlog = async (id_blog: number) => {
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+        });
+        if (result.isConfirmed) {
+            await axios.delete(URL_BLOGS + id_blog,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            )
+            Swal.fire({
+                title: "Deleted",
+                text: "The blog has been deleted correctly",
+                icon: 'success',
+                confirmButtonText: "OK"
+            }).then(() => {
+                getBlogs()
+            })
+        }
+    }
+
+    
+
      useEffect(() => {
         if(token) {
             getBlogs()
             getNameUserOfBlog()
         }
-    }, [])
+    }, [dataBlogs])
   return (
     <section className='flex flex-col w-full py-10 px-5 border-b border-b-slate-200'>
         <div className='flex justify-between items-center pb-10'>
@@ -69,7 +101,7 @@ const BlogsUser:React.FC = () => {
             {dataBlogs.map((blog) => {
                  const authorBlog = dataUsers.find(user => user.id_user === blog.user_id);
                 return (
-                    <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
+                    <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`} onClickDelete={() => deleteBlog(blog.id_blog)} isMyBlogsView={true}/>
                 )
             })}
         

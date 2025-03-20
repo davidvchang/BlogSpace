@@ -2,6 +2,7 @@ import React from 'react'
 import Category from './Category'
 import ProfilePostCard from './ProfilePostCard'
 import InformationBlogCard from './InformationBlogCard'
+import { Trash2, Pencil } from 'lucide-react';
 
 interface PropsPostCard {
   image: string,
@@ -10,10 +11,12 @@ interface PropsPostCard {
   title: string,
   description: string,
   date: string,
-  author: string
+  author: string,
+  onClickDelete: () => void,
+  isMyBlogsView?: boolean,
 }
 
-const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, description, date, author}) => {
+const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, description, date, author, onClickDelete, isMyBlogsView}) => {
   return (
     <div className='flex flex-col w-[28rem] border border-slate-200 rounded-lg overflow-hidden'>
         {/* IMAGE */}
@@ -36,6 +39,19 @@ const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, descrip
                 <InformationBlogCard name='comments'/>
             </div>
 
+            {isMyBlogsView === true && (
+              <div className='w-full flex gap-3 pt-5 justify-between'>
+                <a href='' className='flex w-fit h-fit py-2 px-4 bg-orange-500 text-white items-center gap-1 rounded hover:bg-orange-600 hover:transition duration-300 cursor-pointer'>
+                  <Pencil className='w-4 h-4'/>
+                  <span className='text-sm'>Edit</span>
+                </a>
+
+                <button onClick={onClickDelete} className='flex w-fit h-fit py-2 px-4 bg-red-500 text-white items-center gap-1 rounded hover:bg-red-600 hover:transition duration-300 cursor-pointer'>
+                  <Trash2 className='w-4 h-4'/>
+                  <span className='text-sm'>Delete</span>
+                </button>
+              </div>
+            )}
         </div>
       
     </div>
