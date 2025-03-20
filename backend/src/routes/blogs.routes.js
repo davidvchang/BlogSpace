@@ -1,5 +1,6 @@
 import {Router} from 'express'
 import {getBlogs, postBlog, getOneBlog, deleteBlog, updateBlog} from '../controllers/blogs.controller.js'
+import verifyToken from '../middlewares/verifyToken.js'
 
 const router = Router()
 

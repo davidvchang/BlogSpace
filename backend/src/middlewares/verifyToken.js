@@ -13,7 +13,7 @@ const verifyToken = (req, res, next) => {
   
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-        req.user = decoded; // Guardamos el usuario en la petición para su uso en otras rutas
+        req.user = decoded;
         next();
     } catch (error) {
         res.status(401).json({ message: 'Invalid token or expired' });

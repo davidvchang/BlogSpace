@@ -54,3 +54,15 @@ export const loginUser = async (req, res) => {
         res.status(500).json("An error has ocurred: ", ex)
     }
 }
+
+export const getBlogsUserLogged = async (req, res) => {
+    console.log("USUARIO RECIBIDO EN getBlogsUserLogged:", req.user)
+    const user_id = req.user.id
+    console.log("User ID recibido:", user_id);
+    try {
+        const blogs = await pool.query("SELECT * FROM blogs WHERE user_id = $1", [user_id])
+        res.status(200).json(blogs.rows)
+    } catch (ex) {
+        res.status(500).json({ message: "An error has occurred", error: ex.message })
+    }
+}

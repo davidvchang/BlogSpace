@@ -36,7 +36,7 @@ export const getOneBlog = async (req, res) => {
 }
 
 export const deleteBlog = async (req, res) => {
-    const {id_blog} = req.query
+    const {id_blog} = req.params
     try {
         const existBlog = await pool.query("SELECT COUNT(*) FROM blogs WHERE id_blog = $1", [id_blog])
         if(existBlog.rows[0].count > 0) {
@@ -49,7 +49,7 @@ export const deleteBlog = async (req, res) => {
 }
 
 export const updateBlog = async (req, res) => {
-    const {id_blog} = req.query
+    const {id_blog} = req.params
     const {title, content, image_url} = req.body
     try {
         const existBlog = await pool.query("SELECT COUNT(*) FROM blogs WHERE id_blog = $1", [id_blog])
