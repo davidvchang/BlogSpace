@@ -15,7 +15,6 @@ const Footer:React.FC = () => {
                     <span className='font-semibold'>Platform</span>
                     <LinkFooter link='/' text='Home'/>
                     <LinkFooter link='/blogs' text='Blogs'/>
-                    <LinkFooter link='/about' text='about'/>
                 </div>
 
                 <div className='flex flex-col gap-1'>

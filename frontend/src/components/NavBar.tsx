@@ -57,7 +57,6 @@ const NavBar:React.FC = () => {
             <div className='flex gap-10'>
                 <Nav link='/' text='Home'/>
                 <Nav link='/blogs' text='Blogs'/>
-                <Nav link='/' text='About'/>
             </div>
 
         </div>
