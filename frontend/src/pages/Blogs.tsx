@@ -30,6 +30,7 @@ const Blogs:React.FC = () => {
     const [dataUsers, setDataUsers] = useState<PropsInfoUser[]>([])
     const [categories, setCategories] = useState<[]>([])
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+    const [searchInput, setSearchInput] = useState<string>("");
 
     const getBlogs = async () => {
         const res = await axios.get(URL_BLOGS)
@@ -62,7 +63,7 @@ const Blogs:React.FC = () => {
                 <span className='text-slate-500'>Discover interesting articles and stories</span>
             </div>
 
-            <InputSearch/>
+            <InputSearch value={searchInput} onChange={(e) => setSearchInput(e.target.value)}/>
         </div>
 
         <div className='flex flex-col gap-3'>
@@ -75,6 +76,7 @@ const Blogs:React.FC = () => {
             </div>
             <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-5' >
                 {dataBlogs.filter(blog => !selectedCategory || blog.category === selectedCategory)
+                .filter(blog => blog.title.toLowerCase().includes(searchInput.toLowerCase()))
                 .map((blog) => {
                     const authorBlog = dataUsers.find(user => user.id_user === blog.user_id);
                     return (
