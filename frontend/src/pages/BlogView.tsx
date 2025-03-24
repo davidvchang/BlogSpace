@@ -31,15 +31,26 @@ interface PropsInfoUser {
     last_name: string
 }
 
+interface PropsComment {
+    id_comment: number,
+    comment: string,
+    user_id: number,
+    blog_id: number,
+    date: string
+}
+
 const BlogView:React.FC = () => {
 
     const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS
     const URL_USERS = import.meta.env.VITE_URL_USERS
+    const URL_COMMENTS = import.meta.env.VITE_URL_COMMENTS
 
     const {id_blog} = useParams()
 
     const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
     const [dataUsers, setDataUsers] = useState<PropsInfoUser[]>([])
+    const [dataComments, setDataComments] = useState<PropsComment[]>([])
+    const [numberComments, setNumberComments] = useState<number>(0)
 
     const getBlogs = async () => {
         const res = await axios.get(URL_BLOGS + id_blog)
@@ -51,9 +62,17 @@ const BlogView:React.FC = () => {
         setDataUsers(res.data)
     }
 
+    const getComments = async () => {
+        const res = await axios.get(URL_COMMENTS + id_blog)
+        setDataComments(res.data)
+
+        setNumberComments(res.data.length)
+    }
+
     useEffect(() => {
       getBlogs()
       getNameUserOfBlog()
+      getComments()
     }, [])
   return (
     <section className='flex flex-col w-full items-center py-10 px-5 border-b border-b-slate-200'>
@@ -109,7 +128,7 @@ const BlogView:React.FC = () => {
 
             {/* COMMENTS */}
             <div className='flex flex-col py-10 gap-5'>
-                <span className='text-2xl font-semibold'>Comments (2)</span>
+                <span className='text-2xl font-semibold'>Comments ({numberComments})</span>
 
                 <div className='flex flex-col p-5 border border-slate-200 rounded-lg gap-3'>
                     <span className='text-lg font-medium'>Leave a comment</span>
@@ -121,10 +140,12 @@ const BlogView:React.FC = () => {
                 </div>
 
                 <div className='flex flex-col gap-5'>
-                    <CommentCard/>
-                    <CommentCard/>
-                    <CommentCard/>
-                    <CommentCard/>
+                    {dataComments.map((comment) => {
+                        const author = dataUsers.find(user => user.id_user === comment.user_id)
+                        return (
+                            <CommentCard key={comment.id_comment} content={comment.comment} authorComment={author && `${author.name} ${author.last_name}`} date={comment.date.split("T")[0]}/>
+                        )
+                    })}
                 </div>
             </div>
         </div>
