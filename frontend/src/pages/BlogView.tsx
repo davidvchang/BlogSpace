@@ -94,22 +94,34 @@ const BlogView:React.FC = () => {
     };
 
     const handdlePostComment = async () => {
-        const res = await axios.post(URL_COMMENTS + id_blog, comments,{
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        })
-
-        if(res.status === 201) {
+        if(!token) {
             Swal.fire({
-                title: "Commented",
-                text: "You have commented the post",
-                icon: 'success',
+                title: "Error",
+                text: "You need to login to comment",
+                icon: 'error',
                 confirmButtonText: "OK"
             }).then(() => {
                 setComments(initialValue)
-                getComments()
             })
+        }
+        else {
+            const res = await axios.post(URL_COMMENTS + id_blog, comments,{
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+    
+            if(res.status === 201) {
+                Swal.fire({
+                    title: "Commented",
+                    text: "You have commented the post",
+                    icon: 'success',
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    setComments(initialValue)
+                    getComments()
+                })
+            }
         }
     }
 
@@ -117,9 +129,9 @@ const BlogView:React.FC = () => {
       getBlogs()
       getNameUserOfBlog()
       getComments()
-        if (dataUsers?.id_user) {
-            setComments(prev => ({ ...prev, user_id: dataUsers.id_user }));
-        }
+    if (dataUsers?.id_user) {
+        setComments(prev => ({ ...prev, user_id: dataUsers.id_user }));
+    }
     }, [])
   return (
     <section className='flex flex-col w-full items-center py-10 px-5 border-b border-b-slate-200'>
