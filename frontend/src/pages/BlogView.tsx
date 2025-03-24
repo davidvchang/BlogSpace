@@ -8,6 +8,7 @@ import { ArrowLeft } from 'lucide-react';
 import CommentCard from '../components/CommentCard'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 interface DataBlogs {
     id_blog: number,
@@ -39,6 +40,13 @@ interface PropsComment {
     date: string
 }
 
+interface DataComments {
+    id_comment: number | null,
+    comment: string,
+    blog_id: number,
+    user_id: number
+}
+
 const BlogView:React.FC = () => {
 
     const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS
@@ -47,10 +55,22 @@ const BlogView:React.FC = () => {
 
     const {id_blog} = useParams()
 
+    const token = localStorage.getItem('token');
+    
+    const initialValue: PropsComment = {
+        id_comment: null,
+        comment: "",
+        blog_id: Number(id_blog),
+        user_id: 0,
+        date: ""
+    }
+
     const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
     const [dataUsers, setDataUsers] = useState<PropsInfoUser[]>([])
     const [dataComments, setDataComments] = useState<PropsComment[]>([])
+    const [comments, setComments] = useState<DataComments>(initialValue)
     const [numberComments, setNumberComments] = useState<number>(0)
+
 
     const getBlogs = async () => {
         const res = await axios.get(URL_BLOGS + id_blog)
@@ -69,10 +89,37 @@ const BlogView:React.FC = () => {
         setNumberComments(res.data.length)
     }
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setComments({ ...comments, [e.target.name]: e.target.value });
+    };
+
+    const handdlePostComment = async () => {
+        const res = await axios.post(URL_COMMENTS + id_blog, comments,{
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+
+        if(res.status === 201) {
+            Swal.fire({
+                title: "Commented",
+                text: "You have commented the post",
+                icon: 'success',
+                confirmButtonText: "OK"
+            }).then(() => {
+                setComments(initialValue)
+                getComments()
+            })
+        }
+    }
+
     useEffect(() => {
       getBlogs()
       getNameUserOfBlog()
       getComments()
+        if (dataUsers?.id_user) {
+            setComments(prev => ({ ...prev, user_id: dataUsers.id_user }));
+        }
     }, [])
   return (
     <section className='flex flex-col w-full items-center py-10 px-5 border-b border-b-slate-200'>
@@ -132,10 +179,10 @@ const BlogView:React.FC = () => {
 
                 <div className='flex flex-col p-5 border border-slate-200 rounded-lg gap-3'>
                     <span className='text-lg font-medium'>Leave a comment</span>
-                    <textarea name="comment" id="comment" className='border border-slate-200 rounded-md min-h-28 p-3 text-sm' placeholder='Write your comment...'></textarea>
+                    <textarea name="comment" id="comment" value={comments.comment} onChange={handleChange} className='border border-slate-200 rounded-md min-h-28 p-3 text-sm' placeholder='Write your comment...'></textarea>
                     
                     <div className='flex w-full justify-end'>
-                        <button className='w-fit h-fit bg-blue-500 text-white text-sm font-medium py-[10px] px-5 rounded-md hover:brightness-110 hover:transition duration-300 hover:cursor-pointer'>Post Comment</button>
+                        <button className='w-fit h-fit bg-blue-500 text-white text-sm font-medium py-[10px] px-5 rounded-md hover:brightness-110 hover:transition duration-300 hover:cursor-pointer' onClick={handdlePostComment}>Post Comment</button>
                     </div>
                 </div>
 
