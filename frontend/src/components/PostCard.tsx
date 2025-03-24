@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import Category from './Category'
 import ProfilePostCard from './ProfilePostCard'
 import InformationBlogCard from './InformationBlogCard'
@@ -10,13 +10,14 @@ interface PropsPostCard {
   link: string,
   title: string,
   description: string,
+  comments: number,
   date: string,
   author: string,
   onClickDelete: () => void,
   isMyBlogsView?: boolean,
 }
 
-const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, description, date, author, onClickDelete, isMyBlogsView}) => {
+const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, description, comments, date, author, onClickDelete, isMyBlogsView}) => {
   return (
     <div className='flex flex-col w-[28rem] border border-slate-200 rounded-lg overflow-hidden'>
         {/* IMAGE */}
@@ -36,7 +37,7 @@ const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, descrip
 
             <div className='flex justify-between pt-2'>
                 <InformationBlogCard date={date} name='date'/>
-                <InformationBlogCard name='comments'/>
+                <InformationBlogCard name='comments' numberComments={comments}/>
             </div>
 
             {isMyBlogsView === true && (

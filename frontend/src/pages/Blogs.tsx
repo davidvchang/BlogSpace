@@ -25,12 +25,14 @@ const Blogs:React.FC = () => {
 
     const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS
     const URL_USERS = import.meta.env.VITE_URL_USERS
+    const URL_COMMENTS = import.meta.env.VITE_URL_COMMENTS
 
     const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
     const [dataUsers, setDataUsers] = useState<PropsInfoUser[]>([])
     const [categories, setCategories] = useState<[]>([])
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
     const [searchInput, setSearchInput] = useState<string>("");
+    const [numberComments, setNumberComments] = useState<{ [key: number]: number }>({})
 
     const getBlogs = async () => {
         const res = await axios.get(URL_BLOGS)
@@ -38,6 +40,14 @@ const Blogs:React.FC = () => {
 
         const category = res.data.map(blog => blog.category).filter((cat, i, arr) => arr.indexOf(cat) === i);
         setCategories(category);
+    }
+
+    const getNumberComments = async (id_blog: number) => {
+        const res = await axios.get(URL_COMMENTS + id_blog);
+        setNumberComments(prev => ({
+            ...prev,
+            [id_blog]: res.data.length // Guarda la cantidad de comentarios por blog
+        }));
     }
 
     const getNameUserOfBlog = async () => {
@@ -53,6 +63,12 @@ const Blogs:React.FC = () => {
       getBlogs()
       getNameUserOfBlog()
     }, [])
+
+    useEffect(() => {
+        if (dataBlogs.length > 0) {
+            dataBlogs.forEach(blog => getNumberComments(blog.id_blog));
+        }
+    }, [dataBlogs]);
     
 
   return (
@@ -80,7 +96,7 @@ const Blogs:React.FC = () => {
                 .map((blog) => {
                     const authorBlog = dataUsers.find(user => user.id_user === blog.user_id);
                     return (
-                        <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
+                        <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} comments={numberComments[blog.id_blog] ?? 0} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
                     )
                 })}
             
