@@ -152,7 +152,7 @@ const BlogView:React.FC = () => {
 
                             <div className='flex gap-5'>
                                 <InformationBlogCard name='date' date={blog.date.split("T")[0]}/> 
-                                <InformationBlogCard name='comments'/> 
+                                <InformationBlogCard name='comments' numberComments={numberComments}/> 
                             </div>
 
                         </div>
