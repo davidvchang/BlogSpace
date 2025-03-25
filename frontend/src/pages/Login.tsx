@@ -14,7 +14,6 @@ const Login:React.FC = () => {
         e.preventDefault()
 
         try {
-            console.log(`${URL_USER}login`)
             const response = await axios.post(`${URL_USER}login`, {
                 email,
                 password

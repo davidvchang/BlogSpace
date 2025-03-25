@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import Swal from 'sweetalert2';
 
 interface PropsInfoUser {
     id_user: number,
@@ -15,8 +16,16 @@ const ProfileUser:React.FC = () => {
 
     const token = localStorage.getItem('token');
 
+    const initialValues = {
+        id_user: 0,
+        email: '',
+        name: '',
+        last_name: '',
+        profile_image_url: ''
+    }
+
     const [isEditing, setIsEditing] = useState(false);
-    const [dataUsers, setDataUsers] = useState<PropsInfoUser[]>([])
+    const [dataUsers, setDataUsers] = useState<PropsInfoUser>(initialValues)
 
     const getUser = async () => {
         const res = await axios.get(`${URL_USERS}/autenticatedUser`, {
@@ -25,8 +34,11 @@ const ProfileUser:React.FC = () => {
 
             },
         })
-        console.log("DATOS USER: ", res.data)
-        setDataUsers(res.data)
+        if (Array.isArray(res.data)) {
+            setDataUsers(res.data[0]);
+        } else {
+            setDataUsers(res.data);
+        }
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,8 +50,28 @@ const ProfileUser:React.FC = () => {
         setIsEditing(true);
     };
 
-    const handleSaveProfile = async () => {
+    const handleSaveProfile = async (e: React.FormEvent) => {
+        e.preventDefault()
 
+        const res = await axios.put(URL_USERS, dataUsers, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        })
+
+        if(res.status === 200) {
+            Swal.fire({
+                title: "Updated",
+                text: "User has been updated correctly",
+                icon: 'success',
+                confirmButtonText: "OK"
+            }).then(() => {
+                localStorage.setItem('token', res.data.token);
+                setDataUsers({...dataUsers, name: res.data.name, last_name: res.data.last_name, profile_image_url: res.data.profile_image_url,});
+                getUser()
+                window.location.href = '/user/profile'
+            })
+        }
     }
 
     useEffect(() => {
@@ -67,11 +99,11 @@ const ProfileUser:React.FC = () => {
                 <form className="w-full space-y-4">
                 {isEditing && (
                     <div>
-                    <label htmlFor="profile_image" className="block font-medium">Profile Image URL</label>
+                    <label htmlFor="profile_image_url" className="block font-medium">Profile Image URL</label>
                     <input
                         type="text"
-                        id="profile_image"
-                        name="profile_image"
+                        id="profile_image_url"
+                        name="profile_image_url"
                         value={dataUsers?.profile_image_url}
                         onChange={handleChange}
                         className="mt-2 p-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
