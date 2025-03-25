@@ -1,6 +1,6 @@
 import Footer from "./components/Footer"
 import NavBar from "./components/NavBar"
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
+import {BrowserRouter, Route, Routes, Navigate} from 'react-router-dom'
 import Home from "./pages/Home"
 import Blogs from "./pages/Blogs"
 import BlogView from "./pages/BlogView"
@@ -10,6 +10,7 @@ import BlogsUser from "./pages/BlogsUser"
 import AddBlog from "./pages/AddBlog"
 
 function App() {
+  const token = localStorage.getItem('token');
 
   return (
     <main>
@@ -25,8 +26,8 @@ function App() {
             <Route path="/register" element={<Register/>}/>
 
 
-            <Route path="/user/blogs" element={<BlogsUser/>}/>
-            <Route path="/user/add-blog" element={<AddBlog/>}/>
+            <Route path="/user/blogs" element={token ? <BlogsUser/> : <Navigate to="/login"/>}/>
+            <Route path="/user/add-blog" element={token ? <AddBlog/> : <Navigate to="/login"/>}/>
           </Routes>
         
         </BrowserRouter>
