@@ -1,7 +1,6 @@
 import React from 'react'
 import ProfilePostCard from './ProfilePostCard'
 import InformationBlogCard from './InformationBlogCard'
-import LikeComments from './LikeComments'
 
 interface PropsComments {
   content: string,
@@ -20,11 +19,6 @@ const CommentCard:React.FC<PropsComments> = ({ content, authorComment, date, ima
 
         <div className='flex flex-col gap-5 pl-12'>
             <p>{content}</p>
-
-            <div className='flex gap-10'>
-                <LikeComments/>
-            </div>
-
         </div>
       
     </div>
