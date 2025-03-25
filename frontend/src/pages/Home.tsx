@@ -31,17 +31,35 @@ interface PropsInfoUser {
 const Home:React.FC = () => {
 
   const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS 
+  const URL_COMMENTS = import.meta.env.VITE_URL_COMMENTS
   const URL_USERS = import.meta.env.VITE_URL_USERS
 
   const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
   const [dataUsers, setDataUsers] = useState<PropsInfoUser[]>([])
   const [lastBlogData, setLastBlogData] = useState<DataBlogs[]>([])
+  const [numberComments, setNumberComments] = useState<{ [key: number]: number }>({})
 
   const getLastBlog = async () => {
-      const res = await axios.get(URL_BLOGS)
-      const lastBlog = res.data.slice(-1)[0];
-      setLastBlogData([lastBlog])
+    const res = await axios.get(URL_BLOGS);
+    const lastBlog = res.data.slice(-1)[0];
+    setLastBlogData([lastBlog]);
+
+    if (lastBlog) {
+        const resComments = await axios.get(URL_COMMENTS + lastBlog.id_blog);
+        setNumberComments(prev => ({
+            ...prev,
+            [lastBlog.id_blog]: resComments.data.length
+        }));
+    }
   }
+
+  const getNumberComments = async (id_blog: number) => {
+    const res = await axios.get(URL_COMMENTS + id_blog);
+    setNumberComments(prev => ({
+        ...prev,
+        [id_blog]: res.data.length
+    }));
+}
 
   const getRecentsBlogs = async () => {
     const res = await axios.get(URL_BLOGS)
@@ -59,6 +77,12 @@ const Home:React.FC = () => {
     getRecentsBlogs()
     getNameUserOfBlog()
   }, [])
+
+  useEffect(() => {
+      if (dataBlogs.length > 0) {
+          dataBlogs.forEach(blog => getNumberComments(blog.id_blog));
+      }
+  }, [dataBlogs]);
 
   return (
     <section className='flex flex-col w-full py-10 px-5 border-b border-b-slate-200'>
@@ -100,7 +124,7 @@ const Home:React.FC = () => {
 
                   <div className='flex gap-5 items-center text-slate-500'>
                     <InformationBlogCard name='date' date={blog.date.split("T")[0]}/>
-                    <InformationBlogCard name='comments'/>
+                    <InformationBlogCard name='comments' numberComments={numberComments[blog.id_blog] ?? 0}/>
                   </div>
                 </div>
 
@@ -123,7 +147,7 @@ const Home:React.FC = () => {
           {dataBlogs.map((b) => {
             const authorBlog = dataUsers.find(user => user.id_user === b.user_id);
             return (
-              <PostCard key={b.id_blog} link={`/blog/${b.id_blog}`} title={b.title} description={b.description} image={b.image_url} category={b.category} date={b.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
+              <PostCard key={b.id_blog} link={`/blog/${b.id_blog}`} title={b.title} description={b.description} comments={numberComments[b.id_blog] ?? 0} image={b.image_url} category={b.category} date={b.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
             )
           })}
         </div>
