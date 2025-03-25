@@ -106,22 +106,32 @@ const BlogView:React.FC = () => {
             })
         }
         else {
-            const res = await axios.post(URL_COMMENTS + id_blog, comments,{
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            })
-    
-            if(res.status === 201) {
+            if(comments.comment === null || comments.comment === ""){
                 Swal.fire({
-                    title: "Commented",
-                    text: "You have commented the post",
-                    icon: 'success',
+                    title: "Error",
+                    text: "The comment can't be empty",
+                    icon: 'error',
                     confirmButtonText: "OK"
-                }).then(() => {
-                    setComments(initialValue)
-                    getComments()
                 })
+            }
+            else {
+                const res = await axios.post(URL_COMMENTS + id_blog, comments,{
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+        
+                if(res.status === 201) {
+                    Swal.fire({
+                        title: "Commented",
+                        text: "You have commented the post",
+                        icon: 'success',
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        setComments(initialValue)
+                        getComments()
+                    })
+                }
             }
         }
     }
