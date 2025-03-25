@@ -31,6 +31,7 @@ const BlogsUser:React.FC = () => {
 
     const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
     const [dataUsers, setDataUsers] = useState<PropsInfoUser[]>([])
+    const [searchInput, setSearchInput] = useState<string>("");
     const [numberComments, setNumberComments] = useState<{ [key: number]: number }>({})
 
     const getBlogs = async () => {
@@ -106,7 +107,7 @@ const BlogsUser:React.FC = () => {
             </div>
 
             <div className='flex gap-10'>
-                <InputSearch/>
+                <InputSearch value={searchInput} onChange={(e) => setSearchInput(e.target.value)}/>
 
                 <a href="/user/add-blog" className='w-fit h-fit px-8 py-2 rounded-md text-white bg-blue-500 hover:bg-blue-600 hover:transition duration-300 cursor-pointer'>Add Blog</a>
             </div>
@@ -114,7 +115,8 @@ const BlogsUser:React.FC = () => {
         </div>
 
         <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-5' >
-            {dataBlogs.map((blog) => {
+            {dataBlogs.filter(blog => blog.title.toLowerCase().includes(searchInput.toLowerCase()))
+            .map((blog) => {
                  const authorBlog = dataUsers.find(user => user.id_user === blog.user_id);
                 return (
                     <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} comments={numberComments[blog.id_blog] ?? 0} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`} onClickDelete={() => deleteBlog(blog.id_blog)} isMyBlogsView={true}/>
