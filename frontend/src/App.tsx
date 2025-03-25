@@ -8,6 +8,7 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import BlogsUser from "./pages/BlogsUser"
 import AddBlog from "./pages/AddBlog"
+import ProfileUser from "./pages/ProfileUser"
 
 function App() {
   const token = localStorage.getItem('token');
@@ -28,6 +29,7 @@ function App() {
 
             <Route path="/user/blogs" element={token ? <BlogsUser/> : <Navigate to="/login"/>}/>
             <Route path="/user/add-blog" element={token ? <AddBlog/> : <Navigate to="/login"/>}/>
+            <Route path="/user/profile" element={token ? <ProfileUser/> : <Navigate to="/login"/>}/>
           </Routes>
         
         </BrowserRouter>
