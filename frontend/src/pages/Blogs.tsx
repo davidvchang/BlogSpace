@@ -18,7 +18,8 @@ interface PropsInfoUser {
     id_user: number,
     email: string,
     name: string,
-    last_name: string
+    last_name: string,
+    profile_image_url: string
 }
 
 const Blogs:React.FC = () => {
@@ -96,7 +97,7 @@ const Blogs:React.FC = () => {
                 .map((blog) => {
                     const authorBlog = dataUsers.find(user => user.id_user === blog.user_id);
                     return (
-                        <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} comments={numberComments[blog.id_blog] ?? 0} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
+                        <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} profile_img={authorBlog?.profile_image_url} title={blog.title} description={blog.description} comments={numberComments[blog.id_blog] ?? 0} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
                     )
                 })}
             

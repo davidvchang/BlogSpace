@@ -15,9 +15,10 @@ interface PropsPostCard {
   author: string,
   onClickDelete: () => void,
   isMyBlogsView?: boolean,
+  profile_img: string
 }
 
-const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, description, comments, date, author, onClickDelete, isMyBlogsView}) => {
+const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, description, comments, date, author, onClickDelete, isMyBlogsView, profile_img}) => {
   return (
     <div className='flex flex-col w-[28rem] border border-slate-200 rounded-lg overflow-hidden'>
         {/* IMAGE */}
@@ -33,7 +34,7 @@ const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, descrip
                 <p className='text-sm text-slate-500 line-clamp-2'>{description}</p>
             </div>
 
-            <ProfilePostCard author={author}/>
+            <ProfilePostCard author={author} image_profile={profile_img}/>
 
             <div className='flex justify-between pt-2'>
                 <InformationBlogCard date={date} name='date'/>

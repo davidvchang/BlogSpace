@@ -29,7 +29,8 @@ interface PropsInfoUser {
     id_user: number,
     email: string,
     name: string,
-    last_name: string
+    last_name: string,
+    profile_image_url: string
 }
 
 interface PropsComment {
@@ -148,7 +149,7 @@ const BlogView:React.FC = () => {
                         </div>
 
                         <div className='flex justify-between items-center pt-5'>
-                            <ProfilePostCard blog_view={true} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
+                            <ProfilePostCard blog_view={true} image_profile={authorBlog?.profile_image_url} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
 
                             <div className='flex gap-5'>
                                 <InformationBlogCard name='date' date={blog.date.split("T")[0]}/> 
@@ -202,7 +203,7 @@ const BlogView:React.FC = () => {
                     {dataComments.map((comment) => {
                         const author = dataUsers.find(user => user.id_user === comment.user_id)
                         return (
-                            <CommentCard key={comment.id_comment} content={comment.comment} authorComment={author && `${author.name} ${author.last_name}`} date={comment.date.split("T")[0]}/>
+                            <CommentCard key={comment.id_comment} content={comment.comment} image={author?.profile_image_url} authorComment={author && `${author.name} ${author.last_name}`} date={comment.date.split("T")[0]}/>
                         )
                     })}
                 </div>

@@ -25,7 +25,8 @@ interface PropsInfoUser {
   id_user: number,
   email: string,
   name: string,
-  last_name: string
+  last_name: string,
+  profile_image_url: string
 }
 
 const Home:React.FC = () => {
@@ -100,6 +101,7 @@ const Home:React.FC = () => {
         <span className='text-3xl font-bold'>Featured Post</span>
         {lastBlogData.map((blog) => {
           const authorBlog = dataUsers.find(user => user.id_user === blog.user_id);
+          const profile_img = dataUsers.find(user => user.id_user === blog.user_id)
           return (
             <div className='flex w-full h-96 rounded-md border border-slate-200 overflow-hidden' key={blog.id_blog}>
               {/* IMAGE */}
@@ -120,7 +122,7 @@ const Home:React.FC = () => {
                 </div>
 
                 <div className='flex items-center justify-between pt-5'>
-                  <ProfilePostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} image={blog.image_url} category={blog.category} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
+                  <ProfilePostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} image_profile={profile_img && profile_img.profile_image_url} title={blog.title} description={blog.description} image={blog.image_url} category={blog.category} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
 
                   <div className='flex gap-5 items-center text-slate-500'>
                     <InformationBlogCard name='date' date={blog.date.split("T")[0]}/>
@@ -147,7 +149,7 @@ const Home:React.FC = () => {
           {dataBlogs.map((b) => {
             const authorBlog = dataUsers.find(user => user.id_user === b.user_id);
             return (
-              <PostCard key={b.id_blog} link={`/blog/${b.id_blog}`} title={b.title} description={b.description} comments={numberComments[b.id_blog] ?? 0} image={b.image_url} category={b.category} date={b.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
+              <PostCard key={b.id_blog} link={`/blog/${b.id_blog}`} profile_img={authorBlog?.profile_image_url} title={b.title} description={b.description} comments={numberComments[b.id_blog] ?? 0} image={b.image_url} category={b.category} date={b.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`}/>
             )
           })}
         </div>
