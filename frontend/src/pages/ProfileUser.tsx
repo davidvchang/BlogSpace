@@ -87,7 +87,7 @@ const ProfileUser:React.FC = () => {
             <h1 className="text-3xl font-bold text-center mb-6">User Profile</h1>
 
             <div className="flex flex-col items-center">
-                <div className='w-32 min-h-32 rounded-full overflow-hidden'>
+                <div className='w-32 min-h-32 rounded-full overflow-hidden border border-slate-200'>
                     <img
                     src={dataUsers?.profile_image_url || 'https://img.freepik.com/vector-premium/icono-perfil-avatar-predeterminado-imagen-usuario-redes-sociales-icono-avatar-gris-silueta-perfil-blanco-ilustracion-vectorial_561158-3383.jpg?semt=ais_hybrid'}
                     alt="Profile"

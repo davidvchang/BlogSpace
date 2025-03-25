@@ -10,7 +10,8 @@ interface PropsInfoUser {
     id: number,
     email: string,
     name: string,
-    last_name: string
+    last_name: string,
+    profile_image_url: string
 }
 
 const NavBar:React.FC = () => {
@@ -66,8 +67,8 @@ const NavBar:React.FC = () => {
                 <div className='flex items-center gap-5 relative'>
                     <div className='flex items-center gap-3'>
                         <span className='font-light'>Hello, <strong className='font-semibold'>{dataUser?.name} {dataUser?.last_name}</strong></span>
-                        <div className='min-w-10 min-h-10 bg-red-200 rounded-full'>
-
+                        <div className='w-10 min-h-10 rounded-full overflow-hidden'>
+                            <img src={dataUser?.profile_image_url} alt="Profile photo" className='w-full h-full object-cover'/>
                         </div>
                     </div>
 
@@ -93,8 +94,8 @@ const NavBar:React.FC = () => {
                                     >
                                         <div className='flex flex-col h-full gap-2'>
                                             <div className='flex gap-3 items-center border-b border-b-slate-300 pb-5'>
-                                                <div className='min-w-12 min-h-12 bg-red-200 rounded-full'>
-
+                                                <div className='w-12 min-h-12 rounded-full overflow-hidden'>
+                                                    <img src={dataUser?.profile_image_url} alt="Profile photo" className='w-full h-full object-cover'/>
                                                 </div>  
 
                                                 <span className='text-lg font-medium'>{dataUser?.name} {dataUser?.last_name}</span>
