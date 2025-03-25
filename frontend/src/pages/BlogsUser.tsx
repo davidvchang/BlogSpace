@@ -25,11 +25,13 @@ const BlogsUser:React.FC = () => {
 
     const URL_USERS:string = import.meta.env.VITE_URL_USERS
     const URL_BLOGS:string = import.meta.env.VITE_URL_BLOGS
+    const URL_COMMENTS = import.meta.env.VITE_URL_COMMENTS
 
     const token = localStorage.getItem('token');
 
     const [dataBlogs, setDataBlogs] = useState<DataBlogs[]>([])
     const [dataUsers, setDataUsers] = useState<PropsInfoUser[]>([])
+    const [numberComments, setNumberComments] = useState<{ [key: number]: number }>({})
 
     const getBlogs = async () => {
         const res = await axios.get(URL_USERS + 'my-blogs', {
@@ -38,6 +40,14 @@ const BlogsUser:React.FC = () => {
             },
         });
         setDataBlogs(res.data);
+    }
+
+    const getNumberComments = async (id_blog: number) => {
+        const res = await axios.get(URL_COMMENTS + id_blog);
+        setNumberComments(prev => ({
+            ...prev,
+            [id_blog]: res.data.length // Guarda la cantidad de comentarios por blog
+        }));
     }
 
     const getNameUserOfBlog = async () => {
@@ -81,6 +91,12 @@ const BlogsUser:React.FC = () => {
             getNameUserOfBlog()
         }
     }, [dataBlogs])
+
+    useEffect(() => {
+        if (dataBlogs.length > 0) {
+            dataBlogs.forEach(blog => getNumberComments(blog.id_blog));
+        }
+    }, [dataBlogs]);
   return (
     <section className='flex flex-col w-full py-10 px-5 border-b border-b-slate-200'>
         <div className='flex justify-between items-center pb-10'>
@@ -101,7 +117,7 @@ const BlogsUser:React.FC = () => {
             {dataBlogs.map((blog) => {
                  const authorBlog = dataUsers.find(user => user.id_user === blog.user_id);
                 return (
-                    <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`} onClickDelete={() => deleteBlog(blog.id_blog)} isMyBlogsView={true}/>
+                    <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} title={blog.title} description={blog.description} comments={numberComments[blog.id_blog] ?? 0} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`} onClickDelete={() => deleteBlog(blog.id_blog)} isMyBlogsView={true}/>
                 )
             })}
         
