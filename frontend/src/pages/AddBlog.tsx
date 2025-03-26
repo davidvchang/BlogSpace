@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, CirclePlus } from 'lucide-react';
 import SectionAddBlog from '../components/SectionAddBlog';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useParams, useNavigate } from 'react-router-dom';
 
 interface PropsDataBlog {
     image_url: string,
@@ -22,6 +23,9 @@ interface PropsSections {
 const AddBlog:React.FC = () => {
 
     const URL_BLOGS: string = import.meta.env.VITE_URL_BLOGS
+
+    const { id_blog } = useParams();
+    const navigate = useNavigate();
 
     const initialValues: PropsDataBlog = {
         image_url: "",
@@ -78,10 +82,22 @@ const AddBlog:React.FC = () => {
                 }
     }
 
+    const getDataBlog = async (id: string) => {
+        const res = await axios.get(URL_BLOGS + id)
+        setBlog(res.data)
+        setSections(res.data.sections || []);
+    }
+
+    useEffect(() => {
+        if (id_blog) {
+            getDataBlog(id_blog);
+        }
+    }, [id_blog]);
+
   return (
     <section className='flex flex-col w-full items-center bg-slate-50'>
         <form className='w-[50%] p-5 flex flex-col gap-8' onSubmit={handleSaveBlog}>
-            <span className='text-3xl font-semibold'>Create New Blog</span>
+            <span className='text-3xl font-semibold'>{id_blog ? "Update Blog" : "Create New Blog"}</span>
 
             <div className='flex flex-col gap-8'>
                 <div className='bg-gray-200 w-full h-64 rounded-md overflow-hidden flex justify-center items-center'>

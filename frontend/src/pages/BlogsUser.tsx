@@ -120,7 +120,7 @@ const BlogsUser:React.FC = () => {
             .map((blog) => {
                  const authorBlog = dataUsers.find(user => user.id_user === blog.user_id);
                 return (
-                    <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} profile_img={authorBlog?.profile_image_url} title={blog.title} description={blog.description} comments={numberComments[blog.id_blog] ?? 0} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`} onClickDelete={() => deleteBlog(blog.id_blog)} isMyBlogsView={true}/>
+                    <PostCard key={blog.id_blog} link={`/blog/${blog.id_blog}`} profile_img={authorBlog?.profile_image_url} title={blog.title} description={blog.description} comments={numberComments[blog.id_blog] ?? 0} category={blog.category} image={blog.image_url} date={blog.date.split("T")[0]} author={authorBlog && `${authorBlog.name} ${authorBlog.last_name}`} updateClick={`/user/update/${blog.id_blog}`} onClickDelete={() => deleteBlog(blog.id_blog)} isMyBlogsView={true}/>
                 )
             })}
         

@@ -14,11 +14,12 @@ interface PropsPostCard {
   date: string,
   author: string,
   onClickDelete: () => void,
+  updateClick: string,
   isMyBlogsView?: boolean,
   profile_img: string
 }
 
-const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, description, comments, date, author, onClickDelete, isMyBlogsView, profile_img}) => {
+const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, description, comments, date, author, onClickDelete, isMyBlogsView, profile_img, updateClick}) => {
   return (
     <div className='flex flex-col w-[28rem] border border-slate-200 rounded-lg overflow-hidden'>
         {/* IMAGE */}
@@ -43,7 +44,7 @@ const PostCard:React.FC<PropsPostCard> = ({image, category, link, title, descrip
 
             {isMyBlogsView === true && (
               <div className='w-full flex gap-3 pt-5 justify-between'>
-                <a href='' className='flex w-fit h-fit py-2 px-4 bg-orange-500 text-white items-center gap-1 rounded hover:bg-orange-600 hover:transition duration-300 cursor-pointer'>
+                <a href={updateClick} className='flex w-fit h-fit py-2 px-4 bg-orange-500 text-white items-center gap-1 rounded hover:bg-orange-600 hover:transition duration-300 cursor-pointer'>
                   <Pencil className='w-4 h-4'/>
                   <span className='text-sm'>Edit</span>
                 </a>

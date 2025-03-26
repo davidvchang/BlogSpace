@@ -29,6 +29,7 @@ function App() {
 
             <Route path="/user/blogs" element={token ? <BlogsUser/> : <Navigate to="/login"/>}/>
             <Route path="/user/add-blog" element={token ? <AddBlog/> : <Navigate to="/login"/>}/>
+            <Route path="/user/update/:id_blog" element={token ? <AddBlog/> : <Navigate to="/login"/>}/>
             <Route path="/user/profile" element={token ? <ProfileUser/> : <Navigate to="/login"/>}/>
           </Routes>
         

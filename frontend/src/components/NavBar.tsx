@@ -46,7 +46,7 @@ const NavBar:React.FC = () => {
         if(token) {
             getInfoUserLogged()
         }
-    }, [])
+    }, [token])
     
 
 
